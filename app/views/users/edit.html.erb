@@ -1,0 +1,28 @@
+<div class="container mt-5">
+  <h2>Edit Account Settings</h2>
+
+  <%= form_with model: @user, local: true do |form| %>
+    <div class="mb-3">
+      <%= form.label :name %>
+      <%= form.text_field :name, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :email %>
+      <%= form.email_field :email, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :password %> <small>(Leave blank to keep current password)</small>
+      <%= form.password_field :password, class: "form-control" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :password_confirmation %>
+      <%= form.password_field :password_confirmation, class: "form-control" %>
+    </div>
+
+    <%= form.submit "Update", class: "btn btn-primary" %>
+    <%= link_to "Cancel", root_path, class: "btn btn-secondary ms-2" %>
+  <% end %>
+</div>

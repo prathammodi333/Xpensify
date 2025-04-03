@@ -1,0 +1,11 @@
+<!-- app/views/friend_request_mailer/invite_to_group.html.erb -->
+
+<p>Hi,</p>
+<p><%= @sender.name %> has invited you to join the group "<%= @group.name %>" on Xpensify. Click the link below to join:</p>
+
+<p><%= link_to "Join the group", @invite_link %></p>
+
+<p>If you already have an account, you can simply log in and join the group.</p>
+
+<p>Best,</p>
+<p>The Xpensify Team</p>

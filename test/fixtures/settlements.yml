@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  payer: one
+  payee: one
+  group: one
+  amount: 9.99
+
+two:
+  payer: two
+  payee: two
+  group: two
+  amount: 9.99
