@@ -15,7 +15,7 @@ gem 'sassc-rails'
 gem 'cloudinary'
 gem 'activestorage-cloudinary-service'
 # Email notifications
-gem 'letter_opener', group: :development
+gem 'letter_opener'
 gem 'dotenv-rails'
 gem 'jquery-rails'
 gem 'turbo-rails'
