@@ -23,20 +23,30 @@ class UsersController < ApplicationController
         end
       end
 
-      # Automatically join the group after successful sign-up
-      if session[:pending_group_invite_token].present?
-        group = Group.find_by(invite_token: session.delete(:pending_group_invite_token))
-        if group && !group.users.include?(@user)
-          GroupMembership.create(user: @user, group: group)
-          flash[:notice] ||= "You have successfully joined the group!"
+    # Automatically join the group after successful sign-up
+    if session[:pending_group_invite_token].present?
+      group = Group.find_by(invite_token: session.delete(:pending_group_invite_token))
+      if group && !group.users.include?(@user)
+        GroupMembership.create(user: @user, group: group)
+        group.users.each do |member|
+          next if member == @user  # Skip adding themselves as a friend
+          unless @user.all_friends.include?(member)
+            Rails.logger.debug "Creating friendship between #{@user.name} and #{member.name}"
+            Friendship.create(user: @user, friend: member) unless Friendship.exists?(user: @user, friend: member)
+            Friendship.create(user: member, friend: @user) unless Friendship.exists?(user: member, friend: @user)
+          end
         end
+        flash[:notice] ||= "You have successfully joined the group!"
+        else
+      flash[:alert] = "Invalid invite link."
       end
-
-      redirect_to dashboard_path, notice: flash[:notice] || "Account created successfully!"
-    else
-      render :new, status: :unprocessable_entity
     end
+
+    redirect_to dashboard_path, notice: flash[:notice] || "Account created successfully!"
+  else
+    render :new, status: :unprocessable_entity
   end
+end
   
 
   def edit
