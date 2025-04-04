@@ -1,7 +1,23 @@
 <!-- app/views/balances/show.html.erb -->
 <div class="container mt-4">
   <h2>Balances in <%= @group.name %></h2>
-
+  <!-- Net Balance Display -->
+  <div class="card mb-4">
+    <div class="card-header <%= @net_balance >= 0 ? 'bg-info' : 'bg-success' %> text-white">
+      <h4>Your Net Balance</h4>
+    </div>
+    <div class="card-body">
+      <p class="h5">
+        <%= if @net_balance > 0
+              "You owe a net total of #{number_to_currency(@net_balance)}"
+            elsif @net_balance < 0
+              "You are owed a net total of #{number_to_currency(@net_balance.abs)}"
+            else
+              "You're all settled up!"
+            end %>
+      </p>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-6">
       <div class="card">
