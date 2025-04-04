@@ -36,22 +36,7 @@ Rails.application.configure do
   # Make template changes take effect immediately.
   config.action_mailer.perform_caching = false
 # Use letter_opener for email delivery in development
-config.action_mailer.delivery_method = :smtp
-# config.action_mailer.delivery_method = :letter_opener
-
-  # Set localhost to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
-    # Don't care if the mailer can't send.
-    config.action_mailer.perform_deliveries = true
-    config.action_mailer.raise_delivery_errors = true
-    config.action_mailer.smtp_settings = {
-      address: "smtp.gmail.com",
-      port: 587,
-      user_name: ENV["MAILTRAP_USERNAME"],
-    password: ENV["MAILTRAP_PASSWORD"], # Replace with the Password from Mailtrap
-      authentication: :plain,
-      enable_starttls_auto: true
-    }
+config.action_mailer.delivery_method = :letter_opener
 
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
