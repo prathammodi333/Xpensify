@@ -45,6 +45,7 @@ class SettlementsController < ApplicationController
   before_action :require_login
   before_action :set_group
   before_action :set_payee, only: [:new, :create]
+  before_action :verify_payer, only: [:new, :create]
 
   def new
     @settlement = Settlement.new
@@ -67,7 +68,12 @@ class SettlementsController < ApplicationController
   end
 
   private
-
+  def verify_payer
+    payer_id = params[:payer_id]&.to_i # Convert to integer, nil-safe
+    if payer_id && payer_id != current_user.id
+      redirect_to group_balance_path(@group), alert: "You can only settle your own payments."
+    end
+  end
   def set_group
     @group = Group.find(params[:group_id])
   end

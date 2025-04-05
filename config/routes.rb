@@ -53,7 +53,7 @@ Rails.application.routes.draw do
   get 'groups/invite/:token', to: 'groups#invite', as: 'group_invite'
 
   resources :groups do
-    resources :expenses, only: [:new, :create]
+    resources :expenses, only: [:new, :create,:edit, :update]
   end
 #   Rails.application.routes.draw do
 #     resources :groups do
