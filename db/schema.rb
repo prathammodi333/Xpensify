@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_02_224541) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_05_014915) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   create_table "expense_shares", force: :cascade do |t|
     t.integer "expense_id", null: false
     t.integer "user_id", null: false
@@ -98,13 +101,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_224541) do
   create_table "transaction_histories", force: :cascade do |t|
     t.integer "payer_id", null: false
     t.integer "receiver_id", null: false
-    t.integer "payment_id", null: false
     t.decimal "amount", precision: 10, scale: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "settlement_id"
     t.index ["payer_id"], name: "index_transaction_histories_on_payer_id"
-    t.index ["payment_id"], name: "index_transaction_histories_on_payment_id"
     t.index ["receiver_id"], name: "index_transaction_histories_on_receiver_id"
+    t.index ["settlement_id"], name: "index_transaction_histories_on_settlement_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -132,7 +135,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_224541) do
   add_foreign_key "settlements", "groups"
   add_foreign_key "settlements", "users", column: "payee_id"
   add_foreign_key "settlements", "users", column: "payer_id"
-  add_foreign_key "transaction_histories", "payments"
+  add_foreign_key "transaction_histories", "settlements"
   add_foreign_key "transaction_histories", "users", column: "payer_id"
   add_foreign_key "transaction_histories", "users", column: "receiver_id"
 end

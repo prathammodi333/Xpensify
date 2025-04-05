@@ -6,10 +6,8 @@
   <div class="mb-4 d-flex flex-wrap gap-2">
     <a href="#" class="btn btn-success">+ New Expense</a>
     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addGroupModal">+ Create Group</a>
-
     <a href="#" class="btn btn-warning">💸 Settle Up</a>
     <a href="#" class="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#addFriendModal">+ Add Friend</a>
-
   </div>
   
   <!-- Overview Cards -->
@@ -31,6 +29,7 @@
       </div>
     </div>
   </div>
+
   <!-- Tabbed Content -->
   <ul class="nav nav-tabs mb-4" id="dashboardTabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -56,14 +55,12 @@
                   <h5 class="card-title"><%= group.name %></h5>
                   <p class="card-text"><small class="text-muted">Members: <%= group.users.count %></small></p>
                   <div class="d-flex justify-content-between align-items-center">
-      <a href="<%= group_path(group) %>" class="btn btn-outline-primary btn-sm">View Group</a>
-
-      <%= button_to "Delete", group_path(group),
-          method: :delete,
-          data: { confirm: "Are you sure you want to delete this group?" },
-          class: "btn btn-outline-danger btn-sm" %>
-    </div>
-                 
+                    <a href="<%= group_path(group) %>" class="btn btn-outline-primary btn-sm">View Group</a>
+                    <%= button_to "Delete", group_path(group),
+                        method: :delete,
+                        data: { confirm: "Are you sure you want to delete this group?" },
+                        class: "btn btn-outline-danger btn-sm" %>
+                  </div>
                 </div>
               </div>
             </div>
@@ -101,8 +98,15 @@
       <% if @transactions.any? %>
         <ul class="list-group">
           <% @transactions.each do |tx| %>
-            <li class="list-group-item">
-              <%= tx.payer.name %> paid <%= tx.receiver.name %> <strong><%= currency_format(tx.amount) %></strong> on <%= tx.created_at.strftime("%b %d, %Y") %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <% if tx.payer == @user %>
+                <!-- User paid someone -->
+                <span>You paid <%= tx.receiver.name %> <strong><%= currency_format(tx.amount) %></strong></span>
+              <% else %>
+                <!-- User received payment -->
+                <span><%= tx.payer.name %> paid you <strong><%= currency_format(tx.amount) %></strong></span>
+              <% end %>
+              <small class="text-muted"><%= tx.created_at.strftime("%b %d, %Y") %></small>
             </li>
           <% end %>
         </ul>
@@ -111,4 +115,4 @@
       <% end %>
     </div>
   </div>
-  
+</div>

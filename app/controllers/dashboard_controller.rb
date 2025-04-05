@@ -15,10 +15,9 @@ class DashboardController < ApplicationController
     @friend_balances = calculate_friend_balances
     # @friend_balances = @friends.map { |friend| [friend, @user.friend_balance(friend)] }.to_h
 
-    @transactions = TransactionHistory
-                      .where(payer: @user)
-                      .or(TransactionHistory.where(receiver: @user))
-                      .order(created_at: :desc)
+    @transactions = TransactionHistory.where("payer_id = ? OR receiver_id = ?", @user.id, @user.id)
+                                      .includes(:payer, :receiver)
+                                      .order(created_at: :desc)
     Rails.logger.info "Final Friend Balances: #{@friend_balances.map { |f, b| "#{f.name}: #{b}" }.join(', ')}"
   end
 

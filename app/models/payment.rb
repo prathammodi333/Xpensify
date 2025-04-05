@@ -6,7 +6,7 @@ class Payment < ApplicationRecord
   belongs_to :payer, class_name: 'User'
   belongs_to :receiver, class_name: 'User'
 
-  has_one :transaction_history, dependent: :destroy
+
 
   validates :amount, numericality: { greater_than: 0 }
   validate :payer_and_receiver_cannot_be_same
